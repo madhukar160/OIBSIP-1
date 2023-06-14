@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <style>
+        .calculator {
+            width: 600px;
+            height: auto;
+            margin-top: 50px;
+            margin-left: 500px;
+            background-color: black;
+            border: 1px solid rgb(251, 7, 7);
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgb(248, 143, 6);
+            padding: 30px;
+        }
+        
+        .display {
+            background-color: #fff;
+            border: 2px solid white;
+            border-radius: 5px;
+            padding: 5px;
+            margin-bottom: 20px;
+            font-size: 40px;
+        }
+        
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 20px;
+        }
+        
+        button {
+            background-color: lightskyblue;
+            border: 5px solid white;
+            border-radius: 5px;
+            padding: 25px;
+            cursor: pointer;
+            font-size: larger;
+        }
+        
+        button:hover {
+            background-color: azure;
+        }
+        
+        button:active {
+            background-color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <input class="display" type="text" id="result">
+
+        <div class="buttons">
+            <button id="clear">C</button>
+            <button id="backspace">CE</button>
+            <button id="divide">/</button>
+            <button id="multiply">*</button>
+            <button id="seven">7</button>
+            <button id="eight">8</button>
+            <button id="nine">9</button>
+            <button id="subtract">-</button>
+            <button id="four">4</button>
+            <button id="five">5</button>
+            <button id="six">6</button>
+            <button id="add">+</button>
+            <button id="one">1</button>
+            <button id="two">2</button>
+            <button id="three">3</button>
+            <button id="equals">=</button>
+            <button id="zero">0</button>
+            <button id="decimal">.</button>
+        </div>
+    </div>
+    <script>
+        const result = document.getElementById('result');
+        const clear = document.getElementById('clear');
+        const backspace = document.getElementById('backspace');
+        const divide = document.getElementById('divide');
+        const multiply = document.getElementById('multiply');
+        const subtract = document.getElementById('subtract');
+        const add = document.getElementById('add');
+        const equals = document.getElementById('equals');
+        const decimal = document.getElementById('decimal');
+        const zero = document.getElementById('zero');
+        const one = document.getElementById('one');
+        const two = document.getElementById('two');
+        const three = document.getElementById('three');
+        const four = document.getElementById('four');
+        const five = document.getElementById('five');
+        const six = document.getElementById('six');
+        const seven = document.getElementById('seven');
+        const eight = document.getElementById('eight');
+        const nine = document.getElementById('nine');
+
+        let currentNumber = '';
+        let previousNumber = '';
+        let operation = null;
+
+        function clearAll() {
+            currentNumber = '';
+            previousNumber = '';
+            operation = null;
+            result.value = '';
+        }
+
+        function deleteLast() {
+            currentNumber = currentNumber.slice(0, -1);
+            result.value = currentNumber;
+        }
+
+        function appendNumber(number) {
+            if (number === '.' && currentNumber.includes('.')) return;
+            currentNumber += number;
+            result.value = currentNumber;
+        }
+
+        function chooseOperation(op) {
+            if (currentNumber === '') return;
+            if (previousNumber !== '') {
+                compute();
+            }
+            operation = op;
+            result.value = previousNumber + operation; // Update the result field
+            previousNumber = currentNumber;
+            currentNumber = '';
+        }
+
+
+
+
+
+        function compute() {
+            let computation;
+            const prev = parseFloat(previousNumber);
+            const current = parseFloat(currentNumber);
+            if (isNaN(prev) || isNaN(current)) return;
+            switch (operation) {
+                case '+':
+                    computation = prev + current;
+                    break;
+                case '-':
+                    computation = prev - current;
+                    break;
+                case '*':
+                    computation = prev * current;
+                    break;
+                case '/':
+                    computation = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            currentNumber = computation;
+            operation = null;
+            previousNumber = '';
+            result.value = currentNumber;
+        }
+
+        clear.addEventListener('click', clearAll);
+        backspace.addEventListener('click', deleteLast);
+        divide.addEventListener('click', () => chooseOperation('/'));
+        multiply.addEventListener('click', () => chooseOperation('*'));
+        subtract.addEventListener('click', () => chooseOperation('-'));
+        add.addEventListener('click', () => chooseOperation('+'));
+        equals.addEventListener('click', compute);
+        decimal.addEventListener('click', () => appendNumber('.'));
+        zero.addEventListener('click', () => appendNumber('0'));
+        one.addEventListener('click', () => appendNumber('1'));
+        two.addEventListener('click', () => appendNumber('2'));
+        three.addEventListener('click', () => appendNumber('3'));
+        four.addEventListener('click', () => appendNumber('4'));
+        five.addEventListener('click', () => appendNumber('5'));
+        six.addEventListener('click', () => appendNumber('6'));
+        seven.addEventListener('click', () => appendNumber('7'));
+        eight.addEventListener('click', () => appendNumber('8'));
+        nine.addEventListener('click', () => appendNumber('9'));
+    </script>
+</body>
+
+</html>
